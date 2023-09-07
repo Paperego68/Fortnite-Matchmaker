@@ -5,7 +5,7 @@ import json
 import hashlib
 import base64
 
-def userAgent(bearer):
+def userAgent():
     url = "https://account-public-service-prod.ol.epicgames.com/account/api/oauth/token"
 
     payload=f'grant_type=client_credentials'
@@ -25,8 +25,8 @@ def userAgent(bearer):
 
     response = requests.request("GET", url, headers=headers, data=payload)
 
-    userAgent = "Fortnite/{} Windows/10".format(response.json()["elements"][0]["buildVersion"][:-8])
-    return userAgent
+    useragent = "Fortnite/{} Windows/10".format(response.json()["elements"][0]["buildVersion"][:-8])
+    return useragent
 
 def NetCL(bearer):
     url = "https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/matchmaking/session/matchMakingRequest"
@@ -38,15 +38,18 @@ def NetCL(bearer):
         "maxResults": 1
     })
     headers = {
-        'Authorization': bearer,
+        'Authorization': f'Bearer {bearer}',
         'Content-Type': 'application/json'
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
-    NetCl = response.json()[0]["attributes"]["buildUniqueId_s"]
-    return NetCL
+    try:
+        Netcl = response.json()[0]["attributes"]["buildUniqueId_s"]
+    except:
+        print(response.text)
+    return Netcl
     
-debug = False
+debug = True
 if debug == True:
     solo = "playlist_playgroundv2"
 else:
@@ -73,7 +76,7 @@ else:
 netcl = NetCL(bearer=Bearer)
 
 
-url = f"https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/game/v2/matchmakingservice/ticket/player/{accountid}?partyPlayerIds={accountid}&bucketId=FN:Stage:{netcl}:2:ME:{solo}:PC:private:0&player.platform=Windows&player.subregions=SAO&player.option.preserveSquad=false&player.option.crossplayOptOut=false&player.option.partyId=70da6a5278464ed7934624863c2d45cc&player.option.splitScreen=false&party.WIN=true&input.KBM=true&player.input=KBM&player.option.microphoneEnabled=true&player.option.uiLanguage=pt-BR"
+url = f"https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/game/v2/matchmakingservice/ticket/player/{accountid}?partyPlayerIds={accountid}&bucketId=FN:Stage:{netcl}:2:ME:{solo}:PC:private:0&player.platform=Windows&player.subregions=SAO&player.option.preserveSquad=false&player.option.crossplayOptOut=false&player.option.partyId=FooPartyId&player.option.splitScreen=false&party.WIN=true&input.KBM=true&player.input=KBM&player.option.microphoneEnabled=true&player.option.uiLanguage=pt-BR"
 
 payload = {}
 headers = {
