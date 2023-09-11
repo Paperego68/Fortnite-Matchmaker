@@ -8,7 +8,7 @@ import base64
 def userAgent():
     url = "https://account-public-service-prod.ol.epicgames.com/account/api/oauth/token"
 
-    payload=f'grant_type=client_credentials'
+    payload='grant_type=client_credentials'
     headers = {
         'Authorization': 'Basic MzQ0NmNkNzI2OTRjNGE0NDg1ZDgxYjc3YWRiYjIxNDE6OTIwOWQ0YTVlMjVhNDU3ZmI5YjA3NDg5ZDMxM2I0MWE=',
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -50,7 +50,7 @@ def NetCL(bearer):
     return Netcl
     
 debug = True
-if debug == True:
+if debug is True:
     solo = "playlist_playgroundv2"
 else:
     solo = input("Insert Playlist Here:")
